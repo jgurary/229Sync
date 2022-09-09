@@ -313,6 +313,14 @@ public class ArrayListDemo extends DataStructure implements ArrayLike {
 	@Override
 	public void sort() {
 		arr.sort(compareValues());
+
+		// Sort by name instead
+//		arr.sort(new Comparator<Item>() {
+//			@Override
+//			public int compare(Item o1, Item o2) {
+//				return o1.name.compareTo(o2.name);
+//			}
+//		});
 	}
 
 	/**
