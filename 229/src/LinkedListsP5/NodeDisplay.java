@@ -60,12 +60,17 @@ public class NodeDisplay {
 		}
 		if (list != null && list.head == node) {
 			g.setColor(Color.RED);
-			g.setStroke(new BasicStroke(4));
+			g.setStroke(new BasicStroke(8));
 			g.draw(ellipse);
 		}
 		if (list != null && list.tail == node) {
 			g.setColor(Color.YELLOW);
 			g.setStroke(new BasicStroke(6));
+			g.draw(ellipse);
+		}
+		if (node.isSelected) {
+			g.setStroke(new BasicStroke(4));
+			g.setColor(Color.GREEN);
 			g.draw(ellipse);
 		}
 	}

@@ -66,6 +66,16 @@ public class LinkedList {
 	}
 
 	/**
+	 * Creates a list with a bunch of Nodes that are already connected
+	 * 
+	 * @param n
+	 */
+	public LinkedList(Node head, Node tail) {
+		this.head = head;
+		this.tail = tail;
+	}
+
+	/**
 	 * Inserts into the list if it's blank, otherwise does nothing. Always O(1)
 	 * 
 	 * Insertion is always a little different when the list is completely blank,
@@ -213,6 +223,48 @@ public class LinkedList {
 			curr = curr.next;
 		}
 		return -1; // Not found, return some placeholder
+	}
+
+	/**
+	 * Finds all the Nodes where blue > 200 and returns a new Linked List of just
+	 * those Nodes
+	 * 
+	 * This is an example of using a "dummy" Node to make a function that doesn't
+	 * have to deal with edge cases like the head missing (empty lists). Try writing
+	 * this without the dummy "newHead" Node
+	 * 
+	 * This is usually cleaner/more useful in a singly linked list.
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public LinkedList getVeryBlueList(Node n) {
+		// A dummy head...
+		Node newTail = new Node(Color.BLACK);
+		Node newHead = newTail;
+		Node curr = head;
+
+		while (curr != null) {
+			if (curr.color.getBlue() > 200) {
+				Node newNode = new Node(curr.color);
+				newTail.next = newNode;
+				newNode.previous = newTail;
+				newTail = newNode;
+			}
+			curr = curr.next;
+		}
+		// Because the list is doubly linked, we also have to delete the link from the
+		// node just after the head to the dummy, this is an annoying thing we'd avoid
+		// in a singly linked list
+		if (newHead.next != null) {
+			newHead.next.previous = null;
+		}
+		// The dummy Node is the head of the Linked List we just made, but we don't need
+		// the dummy Node. Just the rest of the list, so we return a new list with
+		// newHead.next() as the head....
+		LinkedList list = new LinkedList(newHead.next, newTail);
+		// If you wanted head/tail to show up visually, you'd connect them here...
+		return list;
 	}
 
 	/**

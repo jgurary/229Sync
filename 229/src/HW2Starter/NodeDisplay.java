@@ -1,5 +1,6 @@
 package HW2Starter;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -31,6 +32,7 @@ public class NodeDisplay {
 	}
 
 	public void draw(Graphics2D g) {
+		g.setStroke(new BasicStroke(1));
 		g.setColor(node.color);
 		g.fill(ellipse);
 		g.setColor(Color.WHITE);
@@ -38,8 +40,8 @@ public class NodeDisplay {
 		if (node.next != null) {
 			g.setColor(Color.white);
 			Ellipse2D next = node.next.display.ellipse;
-			g.drawLine((int) ellipse.getCenterX(), (int) ellipse.getCenterY(), (int) next.getCenterX(),
-					(int) next.getCenterY());
+			g.drawLine((int) ellipse.getCenterX(), (int) ellipse.getCenterY(),
+					(int) next.getCenterX(), (int) next.getCenterY());
 		}
 	}
 

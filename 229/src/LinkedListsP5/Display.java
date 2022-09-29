@@ -99,6 +99,9 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 		Node curr = list.head;
 		while (curr != null) {
 			if (curr.display.contains(e.getPoint())) {
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					curr.isSelected = !curr.isSelected;
+				}
 				System.out.println("Clicked node: " + curr.color);
 			}
 			curr = curr.next;
@@ -134,6 +137,8 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 			if (n != null) {
 				System.out.println("Removed the tail: " + n.color);
 			}
+		} else if (k.getKeyCode() == KeyEvent.VK_D) {
+			list = list.getVeryBlueList(list.head);
 		}
 		repaint();
 	}

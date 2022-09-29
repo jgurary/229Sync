@@ -22,6 +22,7 @@ public class Node {
 	Node previous;
 
 	NodeDisplay display;
+	public boolean isSelected = false;
 
 	/**
 	 * Creates a Node with no connections
