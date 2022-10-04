@@ -95,6 +95,36 @@ public class Tree {
 		}
 	}
 
+	// Valid non-recursive alternative insertion algorithm
+//	public void addNodeAlt(Node n, Node start) {
+//		if (insertIfEmpty(n)) {
+//			return;
+//		}
+//		
+//		Node currNode = start;
+//		while (currNode != null) {
+//			if (n.getColor().getBlue() < currNode.getColor().getBlue()) {
+//				if (currNode.left == null) {
+//					insertLeft(currNode, n);
+//				} else {
+//					currNode = currNode.left;
+//				}
+//			} else if (n.getColor().getBlue() == currNode.getColor().getBlue()) {
+//				if (currNode.left == null) {
+//					insertMiddle(currNode, n);
+//				} else {
+//					currNode = currNode.middle;
+//				}
+//			} else {
+//				if (currNode.right == null) {
+//					insertRight(currNode, n);
+//				} else {
+//					currNode = currNode.right;
+//				}
+//			}
+//		}
+//	}
+
 	/**
 	 * Returns the depth of the Tree, starting from the given Node.
 	 * 
