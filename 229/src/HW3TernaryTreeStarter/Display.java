@@ -1,4 +1,4 @@
-package HW1Starter;
+package HW3TernaryTreeStarter;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,12 +14,14 @@ import javax.swing.event.MouseInputListener;
 
 public class Display extends JPanel implements MouseInputListener, KeyListener {
 
-	CircularArray outer;
-	CircularArray inner;
-	ColorButton[] buttons = new ColorButton[13];
+	Tree tree;
+	ColorButton[] buttons = new ColorButton[40];
+	Color background = Color.black;
 
-	public static final double OUTER_RADIUS = 150;
 	public static final double INNER_RADIUS = 100;
+	public static final double RADIUS_STEP = 50;
+
+	int size = 10;
 
 	/**
 	 * Construct a panel with specified width, height, and background color
@@ -39,26 +41,37 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 		this.setFocusable(true);
 		this.setFocusTraversalKeysEnabled(false);
 
-		outer = new CircularArray(10, width / 2 - Tile.TILE_SIZE / 2,
-				height / 2 - Tile.TILE_SIZE / 2, OUTER_RADIUS);
-		inner = new CircularArray(10, width / 2 - Tile.TILE_SIZE / 2,
-				height / 2 - Tile.TILE_SIZE / 2, INNER_RADIUS);
+		int red = 0;
+		int green = 0;
+		int blue = 0;
+		double x = ColorButton.PADDING;
+		double y = ColorButton.PADDING;
 		for (int i = 0; i < buttons.length; i++) {
-			buttons[i] = new ColorButton(
-					ColorButton.PADDING + i * (ColorButton.SIZE + ColorButton.PADDING),
-					ColorButton.PADDING);
+			red = 255 - 255 / buttons.length * i;
+			green = 255 / buttons.length * i;
+			blue = 255 / buttons.length * i;
+			buttons[i] = new ColorButton(x, y, new Color(red, green, blue));
+			x += ColorButton.SIZE + ColorButton.PADDING;
+			if (x + ColorButton.SIZE > width) {
+				x = ColorButton.PADDING;
+				y += ColorButton.SIZE + ColorButton.PADDING;
+			}
 		}
+		tree = new Tree(this);
 	}
 
 	protected void paintComponent(Graphics graphicHelper) {
 		super.paintComponent(graphicHelper);
 		Graphics2D g = (Graphics2D) graphicHelper;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		outer.draw(g);
-		inner.draw(g);
+		g.setColor(background);
+		// Draw the "background"
+		g.fillRect(0, 0, getWidth(), getHeight());
+		// Draw buttons
 		for (int i = 0; i < buttons.length; i++) {
 			buttons[i].draw(g);
 		}
+		tree.drawTree(g);
 
 	}
 
@@ -80,9 +93,11 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 		for (int i = 0; i < buttons.length; i++) {
 			if (buttons[i].contains(e.getPoint())) {
 				Color c = buttons[i].getColor();
-				System.out.println("The last color clicked was: " + c);
+				Color border = buttons[i].borderColor;
+				tree.addNode(new Node(c, border), tree.root);
 			}
 		}
+		repaint();
 	}
 
 	@Override
@@ -99,17 +114,7 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent k) {
-		if (k.getKeyCode() == KeyEvent.VK_A) {
-			respawnArrays(10);
-		} else if (k.getKeyCode() == KeyEvent.VK_S) {
-			respawnArrays(15);
-		} else if (k.getKeyCode() == KeyEvent.VK_D) {
-			respawnArrays(20);
-		} else if (k.getKeyCode() == KeyEvent.VK_F) {
-			respawnArrays(40);
-		} else if (k.getKeyCode() == KeyEvent.VK_Z) {
-			outer.push(Color.BLUE);
-		}
+
 		repaint();
 	}
 
@@ -119,16 +124,6 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent k) {
-	}
-
-	/**
-	 * Resets both circular arrays and respawns them with the given size.
-	 */
-	public void respawnArrays(int size) {
-		double x = getWidth() / 2 - Tile.TILE_SIZE / 2;
-		double y = getHeight() / 2 - Tile.TILE_SIZE / 2;
-		outer = new CircularArray(size, x, y, OUTER_RADIUS);
-		inner = new CircularArray(size, x, y, INNER_RADIUS);
 	}
 
 }

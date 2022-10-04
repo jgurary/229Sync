@@ -1,4 +1,4 @@
-package HW1Starter;
+package HW1CircularQueueStarter;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

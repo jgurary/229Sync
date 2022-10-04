@@ -1,4 +1,4 @@
-package HW2Starter;
+package HW2LinkedListStarter;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
