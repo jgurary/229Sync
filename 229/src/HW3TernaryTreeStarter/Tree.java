@@ -94,7 +94,7 @@ public class Tree {
 			}
 		}
 	}
-
+	
 	// Valid non-recursive alternative insertion algorithm
 //	public void addNodeAlt(Node n, Node start) {
 //		if (insertIfEmpty(n)) {
