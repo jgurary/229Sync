@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.util.Stack;
 
 public class Tree {
 
@@ -94,7 +95,7 @@ public class Tree {
 			}
 		}
 	}
-	
+
 	// Valid non-recursive alternative insertion algorithm
 //	public void addNodeAlt(Node n, Node start) {
 //		if (insertIfEmpty(n)) {
@@ -146,6 +147,64 @@ public class Tree {
 	}
 
 	/**
+	 * The non-recursive approach to get the max depth is hard to say the least!
+	 * 
+	 * There are probably some slightly simpler algorithms out there: this one uses
+	 * a stack to keep track of visited nodes, popping them as it goes. It visits
+	 * left, then right, and takes advantage of the fact that if the right node was
+	 * the last one popped, the left was also visited.
+	 * 
+	 * There may be bugs...
+	 * 
+	 * @param curr
+	 * @return
+	 */
+	public int getMaxDepthAlt(Node curr) {
+		int depth = 1;
+		int maxDepth = 1;
+		Stack<Node> stack = new Stack<Node>();
+		stack.push(curr);
+		Node lastPopped = null;
+		while (true) {
+			if (stack.isEmpty()) {
+				break;
+			} else {
+//				System.out.println("Visited: " + curr.getColor() + " at depth " + depth);
+//				if (lastPopped != null) {
+//					System.out.println("last popped: " + lastPopped.getColor());
+//				}
+			}
+
+			// If left node not null, not the last one visited, nor was the right one the
+			// last one visited
+			if (curr.left != null && lastPopped != curr.left
+					&& (lastPopped != curr.right || curr.right == null)) {
+				depth++;
+				if (depth > maxDepth) {
+					maxDepth = depth;
+				}
+				curr = curr.left;
+				stack.push(curr);
+				// right node not null nor the last one visited
+			} else if (curr.right != null && lastPopped != curr.right) {
+				depth++;
+				if (depth > maxDepth) {
+					maxDepth = depth;
+				}
+				curr = curr.right;
+				stack.push(curr);
+			} else {
+				// move back up the tree and pop as we go
+				lastPopped = stack.pop();
+				curr = curr.parent;
+				depth--;
+			}
+		}
+
+		return maxDepth;
+	}
+
+	/**
 	 * Returns the max value of the three given inputs.
 	 * 
 	 * @param a
@@ -154,7 +213,7 @@ public class Tree {
 	 * @return
 	 */
 	public int maxOf(int a, int b, int c) {
-		return Math.max(Math.max(a, b), c) + 1;
+		return Math.max(Math.max(a, b), c);
 	}
 
 	/**
@@ -200,15 +259,16 @@ public class Tree {
 		if (parentX > 0 && parentY > 0) {
 			g.drawLine(x + SIZE / 2, y + SIZE / 2, parentX + SIZE / 2, parentY + SIZE / 2);
 		}
+		curr.display.setFrame(x, y, SIZE);
 
 		// Body
 		g.setColor(curr.getColor());
-		g.fillOval(x, y, SIZE, SIZE);
+		g.fill(curr.display.ellipse);
 
 		// Outline color (matches the button's outline)
 		g.setStroke(new BasicStroke(4));
 		g.setColor(curr.borderColor);
-		g.drawOval(x, y, SIZE, SIZE);
+		g.draw(curr.display.ellipse);
 
 		// Node ID text
 		g.setColor(Color.WHITE);

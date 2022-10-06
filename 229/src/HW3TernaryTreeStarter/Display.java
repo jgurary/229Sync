@@ -97,6 +97,9 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 				tree.addNode(new Node(c, border), tree.root);
 			}
 		}
+		if (tree.root != null && tree.root.display.contains(e.getPoint())) {
+			System.out.println("Clicked the root!");
+		}
 		repaint();
 	}
 
@@ -114,7 +117,12 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent k) {
-
+		if (k.getKeyCode() == KeyEvent.VK_A) {
+			System.out.println("Max depth is: " + tree.getMaxDepth(tree.root));
+		}
+		if (k.getKeyCode() == KeyEvent.VK_S) {
+			System.out.println("Max depth is: " + tree.getMaxDepthAlt(tree.root));
+		}
 		repaint();
 	}
 

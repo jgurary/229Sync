@@ -18,11 +18,14 @@ public class Node {
 	public int id;
 	public static int NEXT_ID = 0;
 
+	public DisplayNode display;
+
 	public Node(Color color, Color borderColor) {
 		this.color = color;
 		this.borderColor = borderColor;
 		id = NEXT_ID;
 		NEXT_ID++;
+		display = new DisplayNode();
 	}
 
 	public Color getColor() {
