@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class Tree {
@@ -68,7 +69,7 @@ public class Tree {
 	 * Attempts to insert into the tree
 	 * 
 	 * @param n    - Node to be inserted
-	 * @param curr - Where to being searching for an insertion spot (pass root to
+	 * @param curr - Where to begin searching for an insertion spot (pass root to
 	 *             search the entire tree)
 	 */
 	public void addNode(Node n, Node curr) {
@@ -202,6 +203,48 @@ public class Tree {
 		}
 
 		return maxDepth;
+	}
+
+	public void rebalanceTree() {
+		// Get all the Nodes in the tree in order...
+		ArrayList<Node> arr = traverseInOrder();
+
+		// Destroy all links in all Nodes...
+		for (int i = 0; i < arr.size(); i++) {
+			arr.get(i).left = null;
+			arr.get(i).right = null;
+			arr.get(i).parent = null;
+		}
+
+		int midpoint = arr.size() / 2;
+
+		// The new root is the middle one...
+		root = arr.get(midpoint);
+
+		// You might prefer to work with arrays for the rest...
+		Node[] arrLeft = new Node[midpoint];
+		for (int i = 0; i < midpoint; i++) {
+			arrLeft[i] = arr.get(i);
+		}
+
+		Node[] arrRight = new Node[midpoint];
+		for (int i = midpoint + 1; i < arr.size(); i++) {
+			arrRight[i] = arr.get(i);
+		}
+
+		// Add the Nodes back into the tree...
+		// Something something...
+		// addNode(something, root)....
+
+		// You can significantly improve on this...
+		for (int i = 0; i < midpoint; i++) {
+			addNode(arrLeft[i], root);
+			addNode(arrRight[i + midpoint], root);
+		}
+	}
+
+	public ArrayList<Node> traverseInOrder() {
+		return null;
 	}
 
 	/**

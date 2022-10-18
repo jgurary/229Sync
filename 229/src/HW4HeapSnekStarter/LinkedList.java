@@ -1,7 +1,5 @@
-package HW2LinkedListSolution;
+package HW4HeapSnekStarter;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class LinkedList {
@@ -14,18 +12,6 @@ public class LinkedList {
 	 * The last Node in the list
 	 */
 	Node tail;
-	/**
-	 * Selected Node for cut, insert before/after, and display functionality.
-	 */
-	Node selected;
-
-	/**
-	 * Creates an empty list
-	 */
-	public LinkedList() {
-		head = null;
-		tail = null;
-	}
 
 	/**
 	 * Creates a list with one node
@@ -148,36 +134,18 @@ public class LinkedList {
 	}
 
 	/**
-	 * Removes all Nodes with the given Color from the list.
+	 * Removes all Nodes with the given value from the list.
 	 * 
 	 * @param c
 	 */
-	public void removeAllWithColor(Color c) {
+	public void removeAllWithValue(int val) {
 		Node curr = head;
 		while (curr != null) {
-			if (curr.color == c) {
+			if (curr.value == val) {
 				removeNode(curr);
 			}
 			curr = curr.next;
 		}
-	}
-
-	/**
-	 * Selects the given Node, giving it a special outline and preparing it for
-	 * other operations
-	 * 
-	 * @param n
-	 */
-	public void selectNode(Node n) {
-		selected = n;
-	}
-
-	/**
-	 * Clears the list's selected Node: no Node will be selected until
-	 * {@link #selectNode} triggers again.
-	 */
-	public void deselect() {
-		selected = null;
 	}
 
 	/**
@@ -250,46 +218,37 @@ public class LinkedList {
 	}
 
 	/**
-	 * Draws the list to the screen in a fancy spiral
+	 * Searches the list for the given Node, and sets it's `isRemoved` value to true
+	 * if it finds it.
+	 * 
+	 * @param n
+	 */
+	public void setRemoved(Node n) {
+		Node curr = head;
+		while (curr != null) {
+			if (curr == n) {
+				n.isRemoved = true;
+				return;
+			}
+			curr = curr.next;
+		}
+	}
+
+	/**
+	 * Draws the list to the screen
 	 * 
 	 * @param g
 	 */
-	public void draw(Graphics2D g, int centerX, int centerY) {
+	public void draw(Graphics2D g) {
 		if (head == null) {
 			return;
 		}
 
-		final double THETA_STEP = Math.PI / 5;
-		final double RADIUS_STEP = 4;
-		final int NODE_SIZE = (int) NodeDisplay.NODE_SIZE;
-
-		int x = centerX;
-		int y = centerY;
-		double radius = NODE_SIZE;
-		double theta = 0;
 		Node curr = head;
-		while (curr != null) {
-			curr.display.moveTo(x, y);
-			// Draws a special outline for the selected Node
-			if (selected != null && curr == selected) {
-				g.setStroke(new BasicStroke(6));
-				g.setColor(Color.WHITE);
-				g.drawOval(x, y, NODE_SIZE, NODE_SIZE);
-			}
-			// Prepare x/y for the next Node to be drawn
-			x = (int) (centerX + Math.cos(theta) * radius);
-			y = (int) (centerY + Math.sin(theta) * radius);
-			radius += RADIUS_STEP;
-			theta += THETA_STEP;
-			curr = curr.next;
-		}
-
-		curr = head;
 		while (curr != null) {
 			curr.display.draw(g);
 			curr = curr.next;
 		}
-
 	}
 
 }
