@@ -123,6 +123,9 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 		if (k.getKeyCode() == KeyEvent.VK_S) {
 			System.out.println("Max depth is: " + tree.getMaxDepthAlt(tree.root));
 		}
+		if (k.getKeyCode() == KeyEvent.VK_SPACE) {
+			tree.rebalanceTree();
+		}
 		repaint();
 	}
 
